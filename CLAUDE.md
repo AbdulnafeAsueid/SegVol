@@ -87,6 +87,14 @@ CT-RATE (no masks; source of ReXGroundingCT), M3D-Seg, MetaStructAtlas (PET/CT).
 - Training/benchmarking: **Rescale Cloud HPC**. GPU type not yet known: keep batch size, precision, gradient checkpointing and model paths in a config file. Target fits a single 40–80 GB GPU (4-bit LLaMA-2-7B + frozen SegVol).
 - Code still calls `.cuda()` directly in several places; keep CPU fallbacks in mind for local debugging.
 
+### Disk space on the laptop (important)
+
+The C: drive is nearly full; D: has ~500 GB free. Keep everything on D:.
+- The user sets `HF_HOME=D:\cache\huggingface`, `PIP_CACHE_DIR=D:\cache\pip`, `TORCH_HOME=D:\cache\torch`, and conda `envs_dirs`/`pkgs_dirs` on D:. Check these are in effect (`echo $env:HF_HOME`) before installing or downloading anything; if not, stop and tell the user.
+- Create the Python environment on D: (e.g. `conda create --prefix D:\conda\envs\voxelmind python=3.10`).
+- Never download LLaMA-2-7B, M3D-LaMed or full datasets on the laptop. For local tests use a tiny stand-in causal LM (e.g. a few-million-parameter test model from Hugging Face) and 2–3 sample scans; the real models and data are downloaded only on Rescale.
+- Write outputs (checkpoints, logs, predictions) under a configurable directory on D:.
+
 ## 8. Build order
 
 1. Environment file (requirements/conda) and config system.
@@ -99,9 +107,9 @@ CT-RATE (no masks; source of ReXGroundingCT), M3D-Seg, MetaStructAtlas (PET/CT).
 
 Test each step locally on the small sample before moving to Rescale.
 
-## 9. Course milestones (ICS 619)
+## 9. Course milestones (ICS 619) — background only
 
-R1 background and related work: done (Section 7 of the proposal document). R2: technical analysis of SegVol, M3D-LaMed, SAM-Med3D, SAT, LISA (with equations/pseudocode). R3: experiments with existing solutions (the baselines). R4: proposed method experiments. R5: final report.
+Listed only so you understand where the code fits. **Do not write report text unless the user asks.** The current focus is the code. Milestones: R1 background and related work (done, Section 7 of the proposal document); R2 technical analysis of SegVol, M3D-LaMed, SAM-Med3D, SAT, LISA; R3 experiments with existing solutions (the baselines); R4 proposed-method experiments; R5 final report. When results are produced, save them (tables as CSV, configs, logs) so they can be used in R3/R4 later.
 
 ## 10. Working style
 
